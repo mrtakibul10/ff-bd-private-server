@@ -1,1 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
 
+<title>FF BD PRIVATE SERVER</title>
+
+<link rel="icon" href="assets/app-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #07111f;
+    --card: #101f32;
+    --cyan: #00eaff;
+    --green: #00ff9d;
+    --white: #ffffff;
+    --muted: #a8b7c9;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    overflow-x: hidden;
+}
+
+button, a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    width: 90%;
+    max-width: 1150px;
+    margin: auto;
+}
+
+/* INITIAL LOADER */
+
+#pageLoader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #050b15;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .5s, visibility .5s;
+}
+
+#pageLoader.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 22px;
+    object-fit: cover;
+    box-shadow: 0 0 30px var(--cyan);
+    animation: pulse 1.5s infinite;
+}
+
+.loader-title {
+    margin-top: 25px;
+    font-family: 'Orbitron';
+    font-size: 19px;
+    color: var(--cyan);
+    text-align: center;
+}
+
+.loader-bar {
+    width: 220px;
+    height: 5px;
+    background: #26364a;
+    margin-top: 25px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.loader-progress {
+    height: 100%;
+    width: 0;
+    background: var(--green);
+    animation: pageProgress 10s linear forwards;
+}
+
+@keyframes pageProgress {
+    to { width: 100%; }
+}
+
+@keyframes pulse {
+    50% { transform: scale(1.08); }
+}
+
+/* HEADER */
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(5, 15, 29, .95);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(0,234,255,.2);
+}
+
+.navbar {
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Orbitron';
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--cyan);
+}
+
+.brand img {
+    width: 43px;
+    height: 43px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.nav-links {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+}
+
+.nav-links a {
+    font-size: 13px;
+    color: var(--muted);
+    transition: .3s;
+}
+
+.nav-links a:hover {
+    color: var(--cyan);
+}
+
+.menu-btn {
+    display: none;
+    border: 0;
+    background: transparent;
+    color: white;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 90px 15px;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 30%, rgba(0,234,255,.14), transparent 45%),
+      linear-gradient(135deg, #07111f, #0b1d31);
+}
+
+.hero::before,
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border: 1px solid rgba(0,234,255,.13);
+    border-radius: 50%;
+    animation: rotate 15s linear infinite;
+}
+
+.hero::after {
+    width: 350px;
+    height: 350px;
+    animation-direction: reverse;
+}
+
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 8px 18px;
+    border: 1px solid var(--cyan);
+    border-radius: 30px;
+    color: var(--cyan);
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 22px;
+}
+
+.hero h1 {
+    font-family: 'Orbitron';
+    font-size: clamp(28px, 6vw, 55px);
+    font-weight: 900;
+    line-height: 1.3;
+    text-shadow: 0 0 25px rgba(0,234,255,.35);
+}
+
+.hero h1 span {
+    color: var(--cyan);
+}
+
+.hero p {
+    max-width: 650px;
+    margin: 20px auto;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 30px;
+}
+
+/* BUTTONS */
+
+.button {
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    padding: 14px 24px;
+    border-radius: 9px;
+    font-family: 'Poppins';
+    font-weight: 700;
+    font-size: 13px;
+    transition: .3s;
+}
+
+.button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 22px rgba(0,234,255,.3);
+}
+
+.primary-btn {
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    color: #00131c;
+}
+
+.secondary-btn {
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    background: transparent;
+}
+
+/* SECTION */
+
+section {
+    padding: 75px 0;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 42px;
+}
+
+.section-heading h2 {
+    font-family: 'Orbitron';
+    font-size: clamp(22px, 4vw, 32px);
+}
+
+.section-heading h2 span {
+    color: var(--cyan);
+}
+
+.section-heading p {
+    color: var(--muted);
+    margin-top: 12px;
+    font-size: 13px;
+}
+
+/* DOWNLOAD CARDS */
+
+.download-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.card {
+    background: linear-gradient(145deg, #12253a, #0b192a);
+    border: 1px solid rgba(0,234,255,.18);
+    border-radius: 18px;
+    padding: 30px;
+    text-align: center;
+    transition: .3s;
+}
+
+.card:hover {
+    transform: translateY(-7px);
+    border-color: var(--cyan);
+    box-shadow: 0 0 25px rgba(0,234,255,.1);
+}
+
+.card-icon {
+    font-size: 45px;
+    margin-bottom: 18px;
+}
+
+.card h3 {
+    font-family: 'Orbitron';
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 22px;
+}
+
+.download-trigger {
+    width: 100%;
+}
+
+/* ACCOUNT GENERATOR */
+
+.account-section {
+    background: linear-gradient(120deg, #0a192b, #0c2034);
+}
+
+.account-card {
+    max-width: 750px;
+    margin: auto;
+    text-align: center;
+    padding: 45px 25px;
+    background: #10243a;
+    border: 1px solid rgba(0,234,255,.3);
+    border-radius: 18px;
+}
+
+.account-card h2 {
+    font-family: 'Orbitron';
+    margin-bottom: 15px;
+}
+
+.account-card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+/* FEATURES */
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.feature {
+    background: var(--card);
+    padding: 25px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,234,255,.12);
+    text-align: center;
+}
+
+.feature .icon {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.feature h3 {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+/* DEVELOPER */
+
+.developer-card {
+    max-width: 700px;
+    margin: auto;
+    text-align: center;
+    background: linear-gradient(145deg, #12253a, #081523);
+    border: 1px solid rgba(0,234,255,.3);
+    padding: 40px 25px;
+    border-radius: 20px;
+}
+
+.developer-card img {
+    width: 125px;
+    height: 125px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--cyan);
+    box-shadow: 0 0 25px rgba(0,234,255,.3);
+    margin-bottom: 20px;
+}
+
+.developer-card h2 {
+    font-family: 'Orbitron';
+    font-size: 22px;
+    color: var(--cyan);
+}
+
+.developer-card p {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+/* SOCIAL */
+
+.social-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 13px;
+}
+
+.social-link {
+    min-width: 115px;
+    padding: 13px 17px;
+    border-radius: 9px;
+    background: #12253a;
+    border: 1px solid rgba(0,234,255,.2);
+    text-align: center;
+    font-size: 12px;
+    transition: .3s;
+}
+
+.social-link:hover {
+    background: var(--cyan);
+    color: #00131c;
+}
+
+/* MUSIC */
+
+.music-button {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 900;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--cyan);
+    background: #10243a;
+    color: var(--cyan);
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0,234,255,.2);
+}
+
+/* FOOTER */
+
+footer {
+    background: #040b14;
+    border-top: 1px solid rgba(0,234,255,.2);
+    padding: 35px 15px;
+    text-align: center;
+}
+
+footer h3 {
+    font-family: 'Orbitron';
+    color: var(--cyan);
+    font-size: 16px;
+}
+
+footer p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 12px;
+    line-height: 1.8;
+}
+
+/* DOWNLOAD ANIMATION MODAL */
+
+#downloadModal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0,0,0,.92);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+#downloadModal.active {
+    display: flex;
+}
+
+.scan-box {
+    width: 100%;
+    max-width: 480px;
+    background: #081625;
+    border: 1px solid var(--cyan);
+    border-radius: 18px;
+    padding: 28px 22px;
+    text-align: center;
+    box-shadow: 0 0 35px rgba(0,234,255,.15);
+}
+
+.scan-box h2 {
+    font-family: 'Orbitron';
+    font-size: 19px;
+    color: var(--cyan);
+    margin-bottom: 12px;
+}
+
+.scan-box p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.scan-icon {
+    font-size: 48px;
+    margin: 18px 0;
+    animation: scanPulse 1s infinite;
+}
+
+@keyframes scanPulse {
+    50% {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 15px var(--cyan));
+    }
+}
+
+.code-screen {
+    height: 90px;
+    overflow: hidden;
+    text-align: left;
+    padding: 12px;
+    background: #020a12;
+    color: var(--green);
+    font-family: monospace;
+    font-size: 11px;
+    line-height: 1.7;
+    border: 1px solid #15354b;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.progress-track {
+    width: 100%;
+    height: 8px;
+    background: #203349;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    transition: width .1s linear;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    color: var(--cyan);
+    font-family: 'Orbitron';
+    font-size: 12px;
+}
+
+.status-text {
+    margin-top: 15px;
+    color: var(--green) !important;
+}
+
+.cancel-btn {
+    margin-top: 18px;
+    padding: 9px 20px;
+    border: 1px solid #60758b;
+    background: transparent;
+    color: #c6d3df;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* MOBILE */
+
+@media(max-width: 750px) {
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 75px;
+        left: 0;
+        width: 100%;
+        background: #081625;
+        flex-direction: column;
+        padding: 22px;
+        border-bottom: 1px solid var(--cyan);
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .download-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        min-height: 470px;
+    }
+
+    section {
+        padding: 55px 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- INITIAL LOADER -->
+
+<div id="pageLoader">
+    <img src="assets/app-icon.png" class="loader-logo" alt="Logo">
+    <div class="loader-title">FF BD PRIVATE SERVER</div>
+    <div class="loader-bar">
+        <div class="loader-progress"></div>
+    </div>
+    <p style="margin-top:15px;color:#a8b7c9;font-size:11px;">
+        INITIALIZING WEBSITE...
+    </p>
+</div>
+
+<!-- HEADER -->
+
+<header>
+    <div class="container navbar">
+
+        <a href="#home" class="brand">
+            <img src="assets/app-icon.png" alt="Logo">
+            FF BD PRIVATE SERVER
+        </a>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="#home">HOME</a>
+            <a href="#download">DOWNLOAD</a>
+            <a href="#account">ACCOUNT</a>
+            <a href="#features">FEATURES</a>
+            <a href="#developer">DEVELOPER</a>
+        </nav>
+
+        <button class="menu-btn" id="menuBtn">☰</button>
+
+    </div>
+</header>
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+    <div class="hero-content">
+
+        <div class="hero-badge">WELCOME GAMERS</div>
+
+        <h1>
+            FF BD <span>PRIVATE SERVER</span>
+        </h1>
+
+        <p>
+            Welcome to FF BD Private Server.
+            Explore the download section, access the account generator
+            and discover the gaming experience.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#download" class="button primary-btn">
+                DOWNLOAD NOW
+            </a>
+
+            <a href="#features" class="button secondary-btn">
+                EXPLORE FEATURES
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- DOWNLOAD -->
+
+<section id="download">
+    <div class="container">
+
+        <div class="section-heading">
+            <h2>GAME <span>DOWNLOAD</span></h2>
+            <p>Select the file you want to download.</p>
+        </div>
+
+        <div class="download-grid">
+
+            <!-- APK -->
+
+            <div class="card">
+                <div class="card-icon">📱</div>
+
+                <h3>APK DOWNLOAD</h3>
+
+                <p>
+                    Download the FF BD Private Server APK package.
+                    The APK package scan animation will run before downloading.
+                </p>
+
+                <button
+                    class="button primary-btn download-trigger"
+                    data-type="apk"
+                    data-url="downloads/FF-Private-Server.apk"
+                    data-filename="FF-Private-Server.apk">
+
+                    ⬇ DOWNLOAD APK
+
+                </button>
+            </div>
+
+            <!-- OBB -->
+
+            <div class="card">
+                <div class="card-icon">📦</div>
+
+                <h3>OBB DATA DOWNLOAD</h3>
+
+                <p>
+                    Download the required OBB data file.
+                    Data initialization animation will run before downloading.
+                </p>
+
+                <button
+                    class="button primary-btn download-trigger"
+                    data-type="obb"
+                    data-url="https://cdn.apkdownloader.cc/files/2026/07/free-fire-2022-v-1-70-4-obb_1785138693.obb"
+                    data-filename="free-fire-2022-v-1-70-4-obb.obb">
+
+                    ⬇ DOWNLOAD OBB
+
+                </button>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ACCOUNT GENERATOR -->
+
+<section class="account-section" id="account">
+    <div class="container">
+
+        <div class="section-heading">
+            <h2>ACCOUNT <span>GENERATOR</span></h2>
+            <p>Access the account generator page.</p>
+        </div>
+
+        <div class="account-card">
+
+            <div class="card-icon">👤</div>
+
+            <h2>CREATE YOUR ACCOUNT</h2>
+
+            <p>
+                Open the account generator page using the button below.
+            </p>
+
+            <a
+                href="https://login.sakuramods.dpdns.org/register"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="button primary-btn">
+
+                OPEN ACCOUNT GENERATOR ↗
+
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+
+<section id="features">
+    <div class="container">
+
+        <div class="section-heading">
+            <h2>SERVER <span>FEATURES</span></h2>
+            <p>Explore the website highlights.</p>
+        </div>
+
+        <div class="features-grid">
+
+            <div class="feature">
+                <div class="icon">⚡</div>
+                <h3>Fast Download</h3>
+                <p>Separate download options for APK and OBB files.</p>
+            </div>
+
+            <div class="feature">
+                <div class="icon">🔐</div>
+                <h3>Scan Animation</h3>
+                <p>Animated APK package scanning interface.</p>
+            </div>
+
+            <div class="feature">
+                <div class="icon">📡</div>
+                <h3>Data Initialization</h3>
+                <p>Separate OBB data initialization animation.</p>
+            </div>
+
+            <div class="feature">
+                <div class="icon">🎮</div>
+                <h3>Gaming Theme</h3>
+                <p>Gaming-inspired dark user interface.</p>
+            </div>
+
+            <div class="feature">
+                <div class="icon">📱</div>
+                <h3>Mobile Friendly</h3>
+                <p>Responsive layout for mobile and desktop screens.</p>
+            </div>
+
+            <div class="feature">
+                <div class="icon">🎵</div>
+                <h3>Background Music</h3>
+                <p>Optional background music with a music control button.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- DEVELOPER -->
+
+<section id="developer">
+    <div class="container">
+
+        <div class="section-heading">
+            <h2>ABOUT <span>DEVELOPER</span></h2>
+            <p>Meet the developer behind this project.</p>
+        </div>
+
+        <div class="developer-card">
+
+            <img src="assets/developer.png" alt="Developer">
+
+            <h2>Mʀ.Eᴠᴀɴ¹⁰ᴷ︵皇</h2>
+
+            <p>
+                Hello Gamers! I am the developer behind
+                FF BD Private Server.<br>
+                Developer Username: <strong>mrevan10k</strong>
+            </p>
+
+        </div>
+    </div>
+</section>
+
+<!-- SOCIAL MEDIA -->
+
+<section id="social">
+    <div class="container">
+
+        <div class="section-heading">
+            <h2>FOLLOW <span>US</span></h2>
+            <p>Connect with the developer on social platforms.</p>
+        </div>
+
+        <div class="social-grid">
+
+            <a class="social-link"
+               href="https://www.youtube.com/@mrevan10k"
+               target="_blank" rel="noopener noreferrer">▶ YouTube</a>
+
+            <a class="social-link"
+               href="https://www.facebook.com/mrevan10k"
+               target="_blank" rel="noopener noreferrer">f Facebook</a>
+
+            <a class="social-link"
+               href="https://www.instagram.com/mrevan10k"
+               target="_blank" rel="noopener noreferrer">◎ Instagram</a>
+
+            <a class="social-link"
+               href="https://www.tiktok.com/@mrevan10k"
+               target="_blank" rel="noopener noreferrer">♪ TikTok</a>
+
+            <a class="social-link"
+               href="https://t.me/mrevan10k"
+               target="_blank" rel="noopener noreferrer">✈ Telegram</a>
+
+            <a class="social-link"
+               href="https://x.com/mrevan10k"
+               target="_blank" rel="noopener noreferrer">𝕏 X</a>
+
+            <a class="social-link"
+               href="https://github.com/mrevan10k"
+               target="_blank" rel="noopener noreferrer">⌘ GitHub</a>
+
+            <a class="social-link"
+               href="https://www.twitch.tv/mrevan10k"
+               target="_blank" rel="noopener noreferrer">◉ Twitch</a>
+
+            <a class="social-link"
+               href="https://www.reddit.com/user/mrevan10k"
+               target="_blank" rel="noopener noreferrer">● Reddit</a>
+
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+    <h3>FF BD PRIVATE SERVER</h3>
+
+    <p>
+        Developed by Mʀ.Eᴠᴀɴ¹⁰ᴷ︵皇
+        <br>
+        Independent fan project. Not affiliated with or endorsed by Garena.
+        <br><br>
+        © 2026 FF BD PRIVATE SERVER. All Rights Reserved.
+    </p>
+</footer>
+
+<!-- BACKGROUND MUSIC -->
+
+<audio id="backgroundMusic" loop>
+    <source src="assets/bg-music.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-button" id="musicBtn" title="Music">
+    ♪
+</button>
+
+<!-- DOWNLOAD ANIMATION MODAL -->
+
+<div id="downloadModal">
+
+    <div class="scan-box">
+
+        <h2 id="scanTitle">SYSTEM SCAN</h2>
+
+        <p id="scanDescription">
+            Initializing system...
+        </p>
+
+        <div class="scan-icon" id="scanIcon">🔐</div>
+
+        <div class="code-screen" id="codeScreen">
+            Initializing...
+        </div>
+
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="progress-info">
+            <span id="progressPercent">0%</span>
+            <span id="countdown">10s</span>
+        </div>
+
+        <p class="status-text" id="statusText">
+            Preparing...
+        </p>
+
+        <button class="cancel-btn" id="cancelDownload">
+            CANCEL
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* PAGE LOADER */
+
+window.addEventListener("load", function() {
+    setTimeout(function() {
+        document.getElementById("pageLoader").classList.add("hide");
+    }, 10000);
+});
+
+
+/* MOBILE MENU */
+
+const menuBtn = document.getElementById("menuBtn");
+const navLinks = document.getElementById("navLinks");
+
+menuBtn.addEventListener("click", function() {
+    navLinks.classList.toggle("show");
+});
+
+document.querySelectorAll(".nav-links a").forEach(function(link) {
+    link.addEventListener("click", function() {
+        navLinks.classList.remove("show");
+    });
+});
+
+
+/* BACKGROUND MUSIC */
+
+const music = document.getElementById("backgroundMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+let musicPlaying = false;
+
+musicBtn.addEventListener("click", function() {
+
+    if (musicPlaying) {
+        music.pause();
+        musicBtn.textContent = "♪";
+        musicPlaying = false;
+
+    } else {
+        music.play().then(function() {
+            musicBtn.textContent = "♫";
+            musicPlaying = true;
+        }).catch(function() {
+            alert("Music could not be played. Please try again.");
+        });
+    }
+
+});
+
+
+/* DOWNLOAD ANIMATION SYSTEM */
+
+const downloadModal = document.getElementById("downloadModal");
+
+const scanTitle = document.getElementById("scanTitle");
+const scanDescription = document.getElementById("scanDescription");
+const scanIcon = document.getElementById("scanIcon");
+const codeScreen = document.getElementById("codeScreen");
+
+const progressFill = document.getElementById("progressFill");
+const progressPercent = document.getElementById("progressPercent");
+const countdown = document.getElementById("countdown");
+const statusText = document.getElementById("statusText");
+
+const cancelBtn = document.getElementById("cancelDownload");
+
+let downloadTimer = null;
+let currentDownload = null;
+let startTime = null;
+let animationActive = false;
+
+
+/* RANDOM CODE */
+
+function generateRandomCode() {
+
+    const chars = "0123456789ABCDEF";
+    let code = "";
+
+    for (let i = 0; i < 32; i++) {
+        code += chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    return code;
+}
+
+
+function updateCodeScreen() {
+
+    let lines = "";
+
+    for (let i = 0; i < 5; i++) {
+
+        lines +=
+            "> 0x" +
+            generateRandomCode().substring(0, 12) +
+            " :: " +
+            generateRandomCode().substring(0, 15) +
+            "\n";
+
+    }
+
+    codeScreen.textContent = lines;
+}
+
+
+/* DOWNLOAD FILE */
+
+function downloadFile(type, url, filename) {
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    if (type === "apk") {
+
+        link.download = filename;
+        link.style.display = "none";
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+    } else if (type === "obb") {
+
+        /*
+          OBB CDN-এর ফাইল অন্য ডোমেইনে থাকায়
+          browser download attribute উপেক্ষা করতে পারে।
+
+          তাই সঠিক URL নতুন ট্যাবে খোলা হচ্ছে।
+          CDN-এর response header download নির্ধারণ করবে।
+        */
+
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.style.display = "none";
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+    }
+
+}
+
+
+/* START ANIMATION */
+
+function startVerification(type, url, filename) {
+
+    if (animationActive) return;
+
+    animationActive = true;
+
+    currentDownload = {
+        type: type,
+        url: url,
+        filename: filename
+    };
+
+    downloadModal.classList.add("active");
+
+    progressFill.style.width = "0%";
+    progressPercent.textContent = "0%";
+    countdown.textContent = "10s";
+
+    if (type === "apk") {
+
+        scanTitle.textContent = "APK SECURITY SCAN";
+
+        scanDescription.textContent =
+            "Scanning APK package and checking package structure...";
+
+        scanIcon.textContent = "🔐";
+
+        statusText.textContent =
+            "Initializing APK package scan...";
+
+    } else {
+
+        scanTitle.textContent = "OBB DATA INITIALIZATION";
+
+        scanDescription.textContent =
+            "Initializing and scanning OBB data package...";
+
+        scanIcon.textContent = "📦";
+
+        statusText.textContent =
+            "Preparing OBB data initialization...";
+
+    }
+
+    startTime = Date.now();
+
+    updateCodeScreen();
+
+    downloadTimer = setInterval(function() {
+
+        const elapsed = (Date.now() - startTime) / 1000;
+
+        const percent = Math.min(
+            100,
+            Math.floor((elapsed / 10) * 100)
+        );
+
+        const remaining = Math.max(
+            0,
+            Math.ceil(10 - elapsed)
+        );
+
+        progressFill.style.width = percent + "%";
+
+        progressPercent.textContent = percent + "%";
+
+        countdown.textContent = remaining + "s";
+
+        updateCodeScreen();
+
+        if (type === "apk") {
+
+            const messages = [
+                "Scanning APK package...",
+                "Checking package structure...",
+                "Reading application files...",
+                "Analyzing package data...",
+                "Preparing APK download..."
+            ];
+
+            statusText.textContent =
+                messages[Math.min(4, Math.floor(elapsed))];
+
+        } else {
+
+            const messages = [
+                "Initializing OBB data...",
+                "Reading data package...",
+                "Scanning data structure...",
+                "Preparing data package...",
+                "Preparing OBB download..."
+            ];
+
+            statusText.textContent =
+                messages[Math.min(4, Math.floor(elapsed))];
+
+        }
+
+        if (elapsed >= 10) {
+
+            clearInterval(downloadTimer);
+
+            progressFill.style.width = "100%";
+            progressPercent.textContent = "100%";
+            countdown.textContent = "0s";
+
+            statusText.textContent =
+                "Process completed. Starting download...";
+
+            setTimeout(function() {
+
+                const selected = currentDownload;
+
+                downloadModal.classList.remove("active");
+
+                animationActive = false;
+                currentDownload = null;
+
+                if (selected) {
+                    downloadFile(
+                        selected.type,
+                        selected.url,
+                        selected.filename
+                    );
+                }
+
+            }, 400);
+
+        }
+
+    }, 100);
+
+}
+
+
+/* DOWNLOAD BUTTON EVENTS */
+
+document.querySelectorAll(".download-trigger").forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        const type = button.dataset.type;
+        const url = button.dataset.url;
+        const filename = button.dataset.filename;
+
+        if (!url) {
+            alert("Download URL is missing!");
+            return;
+        }
+
+        startVerification(type, url, filename);
+
+    });
+
+});
+
+
+/* CANCEL */
+
+cancelBtn.addEventListener("click", function() {
+
+    if (downloadTimer) {
+        clearInterval(downloadTimer);
+    }
+
+    downloadTimer = null;
+    currentDownload = null;
+    animationActive = false;
+
+    downloadModal.classList.remove("active");
+
+});
+
+
+</script>
+
+</body>
+</html>
